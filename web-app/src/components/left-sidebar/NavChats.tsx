@@ -29,32 +29,40 @@ export function NavChats() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getFilteredThreads, threads])
 
+  // No chats yet: still expose the importer so a fresh user can bring their
+  // T3 Chat history in before they've created a single thread.
   if (threadsWithoutProject.length === 0) {
-    return null
+    return (
+      <SidebarGroup className="group-data-[collapsible=icon]:hidden">
+        <SidebarMenu>
+          <div className="px-2">
+            <ImportT3ChatsDialog />
+          </div>
+        </SidebarMenu>
+      </SidebarGroup>
+    )
   }
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       <SidebarGroupLabel>{t('common:chats')}</SidebarGroupLabel>
-      {threadsWithoutProject.length > 1 && 
-        <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
-          <DropdownMenuTrigger asChild>
-            <SidebarGroupAction className="hover:bg-sidebar-foreground/8">
-              <MoreHorizontal className="text-muted-foreground" />
-              <span className="sr-only">More</span>
-            </SidebarGroupAction>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent side="right" align="start">
-            <ImportT3ChatsDialog
-              onDropdownClose={() => setDropdownOpen(false)}
-            />
-            <DeleteAllThreadsDialog
-              onDeleteAll={deleteAllThreads}
-              onDropdownClose={() => setDropdownOpen(false)}
-            />
-          </DropdownMenuContent>
-        </DropdownMenu>
-      }
+      <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
+        <DropdownMenuTrigger asChild>
+          <SidebarGroupAction className="hover:bg-sidebar-foreground/8">
+            <MoreHorizontal className="text-muted-foreground" />
+            <span className="sr-only">More</span>
+          </SidebarGroupAction>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent side="right" align="start">
+          <ImportT3ChatsDialog
+            onDropdownClose={() => setDropdownOpen(false)}
+          />
+          <DeleteAllThreadsDialog
+            onDeleteAll={deleteAllThreads}
+            onDropdownClose={() => setDropdownOpen(false)}
+          />
+        </DropdownMenuContent>
+      </DropdownMenu>
       <SidebarMenu>
         <ThreadList threads={threadsWithoutProject} />
       </SidebarMenu>
