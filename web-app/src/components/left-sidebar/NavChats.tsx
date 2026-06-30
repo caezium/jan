@@ -15,6 +15,7 @@ import { useTranslation } from '@/i18n/react-i18next-compat'
 import { useThreads } from "@/hooks/useThreads"
 import ThreadList from "@/containers/ThreadList"
 import { DeleteAllThreadsDialog } from "@/containers/dialogs/DeleteAllThreadsDialog"
+import { ImportT3ChatsDialog } from "@/containers/dialogs/ImportT3ChatsDialog"
 
 export function NavChats() {
   const { t } = useTranslation()
@@ -44,6 +45,9 @@ export function NavChats() {
             </SidebarGroupAction>
           </DropdownMenuTrigger>
           <DropdownMenuContent side="right" align="start">
+            <ImportT3ChatsDialog
+              onDropdownClose={() => setDropdownOpen(false)}
+            />
             <DeleteAllThreadsDialog
               onDeleteAll={deleteAllThreads}
               onDropdownClose={() => setDropdownOpen(false)}
